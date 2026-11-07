@@ -15,6 +15,7 @@ Uygulama, kullanıcının lisans dersleriyle ve her ders için Vize %37,5, Kısa
 - Sınav notu ve ağırlığını değiştirme
 - Ders ortalamasını ve kredi ağırlıklı dönem ortalamasını otomatik hesaplama
 - Standart 100'lük sisteme göre tahmini harf notu gösterimi
+- Girilen notların gerçek ağırlıklı katkısını hesaplama; final girilmeden harf notu ve genel ortalama göstermeme
 - Ağırlık toplamı için görsel uyarı
 - Tek tuşla normal ve kompakt ızgara görünümü arasında geçiş
 - Mobil ve masaüstü ekranlara uyumlu tasarım

@@ -99,8 +99,10 @@ function courseStats(course) {
     (sum, exam) => sum + Number(exam.score) * Number(exam.weight) / 100,
     0,
   );
-  const normalizedAverage = gradedWeight > 0 ? weightedPoints / (gradedWeight / 100) : null;
-  return { totalWeight, gradedWeight, weightedPoints, normalizedAverage };
+  const finalExam = course.exams.find((exam) => exam.name.toLocaleLowerCase("tr-TR").includes("final"));
+  const hasFinalScore = Boolean(finalExam && finalExam.score !== null && finalExam.score !== "");
+  const normalizedAverage = gradedWeight > 0 ? weightedPoints : null;
+  return { totalWeight, gradedWeight, weightedPoints, normalizedAverage, hasFinalScore };
 }
 
 function letterGrade(average) {
@@ -130,9 +132,9 @@ function render() {
 
   const completed = state.courses
     .map(courseStats)
-    .filter((stats) => stats.gradedWeight > 0);
+    .filter((stats) => stats.hasFinalScore);
   if (completed.length) {
-    const includedCourses = state.courses.filter((course) => courseStats(course).gradedWeight > 0);
+    const includedCourses = state.courses.filter((course) => courseStats(course).hasFinalScore);
     const creditTotal = includedCourses.reduce((sum, course) => sum + Number(course.credit || 0), 0);
     const average = creditTotal > 0
       ? includedCourses.reduce((sum, course) => sum + courseStats(course).normalizedAverage * Number(course.credit), 0) / creditTotal
@@ -181,7 +183,9 @@ function renderCourse(course) {
   fragment.querySelector(".course-average").textContent = stats.normalizedAverage === null
     ? "—"
     : formatNumber(stats.normalizedAverage);
-  fragment.querySelector(".letter-grade").textContent = letterGrade(stats.normalizedAverage);
+  fragment.querySelector(".letter-grade").textContent = stats.hasFinalScore
+    ? letterGrade(stats.normalizedAverage)
+    : "—";
 
   const totalWeight = fragment.querySelector(".total-weight");
   totalWeight.textContent = `%${formatNumber(stats.totalWeight)}`;
