@@ -206,12 +206,14 @@ function createExamRow(course, exam) {
   const row = document.createElement("div");
   row.className = "exam-row";
   row.innerHTML = `
-    <button class="exam-name" type="button" aria-label="${escapeHtml(exam.name)} sınavını düzenle">${escapeHtml(exam.name)}</button>
-    <span class="exam-score">${exam.score === null || exam.score === "" ? "—" : formatNumber(exam.score)}</span>
-    <span class="exam-weight">%${formatNumber(exam.weight)}</span>
+    <button class="exam-name edit-exam" type="button" aria-label="${escapeHtml(exam.name)} sınavını düzenle">${escapeHtml(exam.name)}</button>
+    <button class="exam-score edit-exam" type="button" aria-label="${escapeHtml(exam.name)} notunu düzenle">${exam.score === null || exam.score === "" ? "Not gir" : formatNumber(exam.score)}</button>
+    <button class="exam-weight edit-exam" type="button" aria-label="${escapeHtml(exam.name)} ağırlığını düzenle">%${formatNumber(exam.weight)}</button>
     <button class="delete-exam" type="button" aria-label="${escapeHtml(exam.name)} sınavını sil">×</button>
   `;
-  row.querySelector(".exam-name").addEventListener("click", () => openExamDialog(course.id, exam.id));
+  row.querySelectorAll(".edit-exam").forEach((button) => {
+    button.addEventListener("click", () => openExamDialog(course.id, exam.id));
+  });
   row.querySelector(".delete-exam").addEventListener("click", () => {
     course.exams = course.exams.filter((item) => item.id !== exam.id);
     saveState();

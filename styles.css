@@ -138,9 +138,11 @@ h1 {
 .course-grid.compact .credit-editor input { width: 47px; height: 26px; }
 .course-grid.compact .score-row { margin-top: 12px; }
 .course-grid.compact .score-row strong { font-size: 18px; }
-.course-grid.compact .exam-list,
 .course-grid.compact .add-exam { display: none; }
-.course-grid.compact .weight-track { margin-bottom: 0; }
+.course-grid.compact .weight-track { margin-bottom: 11px; }
+.course-grid.compact .exam-row { min-height: 38px; grid-template-columns: minmax(0, 1fr) 61px 52px 22px; gap: 5px; }
+.course-grid.compact .exam-row button { font-size: 11px; }
+.course-grid.compact .delete-exam { font-size: 17px; }
 .course-card {
   position: relative;
   overflow: hidden;
@@ -217,8 +219,10 @@ h1 {
 }
 .exam-row button { border: 0; background: transparent; text-align: left; padding: 0; color: var(--ink); }
 .exam-row .exam-name { font-weight: 700; }
-.exam-score { font-weight: 800; text-align: right; }
-.exam-weight { color: var(--muted); font-size: 12px; text-align: right; }
+.exam-score { font-weight: 800; text-align: right !important; }
+.exam-score:hover, .exam-weight:hover, .exam-name:hover { color: #397368; }
+.exam-score:focus-visible, .exam-weight:focus-visible, .exam-name:focus-visible { outline: 2px solid #5b887f; outline-offset: 3px; border-radius: 4px; }
+.exam-weight { color: var(--muted) !important; font-size: 12px; text-align: right !important; }
 .delete-exam { color: #9b756f !important; font-size: 19px; text-align: center !important; }
 .delete-exam:hover { color: var(--danger) !important; }
 .no-exams { padding: 24px 0 18px; color: var(--muted); font-size: 14px; text-align: center; border-bottom: 1px solid var(--line); }
