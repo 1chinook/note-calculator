@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101d2c" />
+    <title>Not Hesaplama</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Not Hesaplama ana sayfa">
+        <span class="brand-mark">N</span>
+        <span>Not Hesaplama</span>
+      </a>
+      <button class="btn btn-primary" id="addCourseTop" type="button">+ Ders ekle</button>
+    </header>
+
+    <main class="page-shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">LİSANS • DÖNEM TAKİBİ</p>
+          <h1>Üniversite notlarını tek yerde yönet.</h1>
+          <p class="hero-copy">Derslerini, kredilerini, sınavlarını ve ağırlıklarını gir; kredi ağırlıklı dönem ortalamanı anında gör.</p>
+        </div>
+        <div class="overall-card" aria-live="polite">
+          <span>Genel ortalama</span>
+          <strong id="overallAverage">—</strong>
+          <small id="overallSubtitle">Henüz hesaplanmadı</small>
+        </div>
+      </section>
+
+      <section class="section-heading">
+        <div>
+          <h2>Derslerim</h2>
+          <p id="courseCount">0 ders</p>
+        </div>
+        <div class="heading-actions">
+          <button class="btn btn-secondary" id="toggleCompact" type="button" aria-pressed="false">▦ Kompakt görünüm</button>
+          <button class="btn btn-secondary" id="addCourse" type="button">+ Yeni ders</button>
+        </div>
+      </section>
+
+      <section id="courseList" class="course-grid" aria-live="polite"></section>
+
+      <section id="emptyState" class="empty-state">
+        <div class="empty-icon">✦</div>
+        <h2>İlk dersini ekle</h2>
+        <p>Sınavlarını ve ağırlıklarını takip etmeye başlamak için bir ders oluştur.</p>
+        <button class="btn btn-primary" id="addFirstCourse" type="button">Ders ekle</button>
+      </section>
+    </main>
+
+    <dialog id="courseDialog" class="modal">
+      <form id="courseForm" method="dialog">
+        <div class="modal-heading">
+          <div>
+            <p class="eyebrow">YENİ DERS</p>
+            <h2>Ders ekle</h2>
+          </div>
+          <button class="icon-btn" id="closeCourseDialog" type="button" aria-label="Pencereyi kapat">×</button>
+        </div>
+        <label>
+          Ders adı
+          <input id="courseName" name="courseName" placeholder="Örn. Matematik I" maxlength="60" required />
+        </label>
+        <label>
+          Ders kredisi
+          <input id="courseCredit" name="courseCredit" type="number" min="0.5" max="30" step="0.5" value="3" required />
+        </label>
+        <label>
+          Ders rengi
+          <span class="color-options" id="colorOptions"></span>
+        </label>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" id="cancelCourse" type="button">Vazgeç</button>
+          <button class="btn btn-primary" type="submit">Dersi ekle</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="examDialog" class="modal">
+      <form id="examForm" method="dialog">
+        <div class="modal-heading">
+          <div>
+            <p class="eyebrow">DEĞERLENDİRME</p>
+            <h2 id="examDialogTitle">Sınav ekle</h2>
+          </div>
+          <button class="icon-btn" id="closeExamDialog" type="button" aria-label="Pencereyi kapat">×</button>
+        </div>
+        <input id="examCourseId" type="hidden" />
+        <input id="examId" type="hidden" />
+        <label>
+          Sınav adı
+          <input id="examName" placeholder="Örn. Vize" maxlength="40" required />
+        </label>
+        <div class="two-columns">
+          <label>
+            Not
+            <input id="examScore" type="number" min="0" max="100" step="0.01" placeholder="Henüz girilmedi" />
+          </label>
+          <label>
+            Ağırlık (%)
+            <input id="examWeight" type="number" min="0" max="100" step="0.01" placeholder="Örn. 40" required />
+          </label>
+        </div>
+        <p class="form-note" id="weightHint"></p>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" id="cancelExam" type="button">Vazgeç</button>
+          <button class="btn btn-primary" type="submit">Kaydet</button>
+        </div>
+      </form>
+    </dialog>
+
+    <template id="courseTemplate">
+      <article class="course-card">
+        <div class="course-accent"></div>
+        <div class="course-header">
+          <div>
+            <p class="course-label">DERS</p>
+            <input class="course-name-input" aria-label="Ders adı" maxlength="60" />
+          </div>
+          <button class="icon-btn delete-course" type="button" aria-label="Dersi sil">×</button>
+        </div>
+        <label class="credit-editor">
+          Kredi
+          <input class="course-credit-input" type="number" min="0.5" max="30" step="0.5" aria-label="Ders kredisi" />
+        </label>
+        <div class="score-row">
+          <div>
+            <span>Ortalama</span>
+            <strong class="course-average">—</strong>
+          </div>
+          <div class="letter-status">
+            <span>Harf notu</span>
+            <strong class="letter-grade">—</strong>
+          </div>
+          <div class="weight-status">
+            <span>Ağırlık toplamı</span>
+            <strong class="total-weight">%0</strong>
+          </div>
+        </div>
+        <div class="weight-track"><span></span></div>
+        <div class="exam-list"></div>
+        <button class="add-exam" type="button">+ Sınav ekle</button>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
