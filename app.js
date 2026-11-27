@@ -299,6 +299,7 @@ ui.courseForm.addEventListener("submit", (event) => {
   const name = ui.courseName.value.trim();
   if (!name) return;
   const credit = Number(ui.courseCredit.value);
+  if (!Number.isFinite(credit) || credit < 0.5 || credit > 30) return;
   state.courses.push({ id: uid(), name, credit, color: selectedColor, exams: [] });
   saveState();
   ui.courseDialog.close();
@@ -315,7 +316,15 @@ ui.examForm.addEventListener("submit", (event) => {
     score: ui.examScore.value === "" ? null : Number(ui.examScore.value),
     weight: Number(ui.examWeight.value),
   };
-  if (!values.name || (values.score !== null && (values.score < 0 || values.score > 100)) || values.weight < 0 || values.weight > 100) return;
+  if (
+    !values.name ||
+    (values.score !== null && (!Number.isFinite(values.score) || values.score < 0 || values.score > 100)) ||
+    !Number.isFinite(values.weight) ||
+    values.weight < 0 ||
+    values.weight > 100
+  ) {
+    return;
+  }
 
   const existing = course.exams.find((item) => item.id === ui.examId.value);
   if (existing) Object.assign(existing, values);
